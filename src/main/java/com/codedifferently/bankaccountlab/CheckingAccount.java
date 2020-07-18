@@ -15,4 +15,9 @@ public class CheckingAccount extends BankAccount {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " Your name: " + getName();
+    }
 }

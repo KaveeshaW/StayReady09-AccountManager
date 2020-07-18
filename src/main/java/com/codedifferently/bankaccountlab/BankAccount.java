@@ -54,4 +54,7 @@ public abstract class BankAccount {
         return amount;
     }
 
+    public String toString() {
+        return "AccountNumber: " + getAccountNumber() + " balance: " + getBalance();
+    }
 }

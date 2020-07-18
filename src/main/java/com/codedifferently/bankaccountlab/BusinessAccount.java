@@ -24,4 +24,9 @@ public class BusinessAccount extends BankAccount{
     public void setTaxID(int taxID) {
         this.taxID = taxID;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " Company Name: " + getCompanyName() + " TaxID: " + getTaxID();
+    }
 }

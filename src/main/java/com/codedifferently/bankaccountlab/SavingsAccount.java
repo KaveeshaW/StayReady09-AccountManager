@@ -25,4 +25,9 @@ public class SavingsAccount extends BankAccount{
     public void setRate(double rate) {
         this.rate = rate;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " Your name: " + getName() + " rate: " + getRate();
+    }
 }
