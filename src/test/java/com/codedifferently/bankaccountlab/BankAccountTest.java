@@ -11,7 +11,6 @@ public class BankAccountTest {
 
     @Before
     public void instantiate() {
-        //using checking account since it doesn't have any added functionality to BankAccount
         checkingAccount = new CheckingAccount();
     }
 
@@ -42,25 +41,6 @@ public class BankAccountTest {
         double actual = checkingAccount.getAnnualFees();
 
         Assert.assertEquals(expected, actual, 0.0);
-    }
-
-    @Test
-    public void getNameTest() {
-        String expected = "not set";
-
-        String actual = checkingAccount.getName();
-
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void setNameTest() {
-        String expected = "Bill";
-
-        checkingAccount.setName("Bill");
-        String actual = checkingAccount.getName();
-
-        Assert.assertEquals(expected, actual);
     }
 
     @Test

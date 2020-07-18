@@ -10,7 +10,6 @@ public abstract class BankAccount {
     //every subclass has these fields
     protected UUID accountNumber = UUID.randomUUID();
     protected double annualFees = 0.0;
-    protected String name = "not set";
     protected double balance = 0.0;
 
     public UUID getAccountNumber() {
@@ -23,14 +22,6 @@ public abstract class BankAccount {
 
     public void setAnnualFees(double fees) {
         annualFees = fees;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public double getBalance() {
