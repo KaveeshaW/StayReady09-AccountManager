@@ -94,30 +94,25 @@ public class MainApplication {
     }
 
     private static void addToListOfBankAccounts(String whichAccount, String password) {
-        boolean successfullyCreatedAccount = false;
-        String whichTypeOfAccount = "";
+        boolean accountCreationSuccessful = true;
         switch(whichAccount) {
             case "business":
                 accounts.get("business").add(new BusinessAccount(password));
-                successfullyCreatedAccount = true;
-                whichTypeOfAccount = "business";
                 break;
             case "checking":
                 accounts.get("checking").add(new CheckingAccount(password));
-                successfullyCreatedAccount = true;
-                whichTypeOfAccount = "checking";
                 break;
             case "savings":
                 accounts.get("savings").add(new SavingsAccount(password));
-                successfullyCreatedAccount = true;
-                whichTypeOfAccount = "savings";
                 break;
             default:
                 LOGGER.warning("You have entered an invalid account type. Please try again.");
+                accountCreationSuccessful = false;
                 break;
         }
-        if(successfullyCreatedAccount) {
-            String congratulationMessage = "Congrats! You just created a new account of type " + whichTypeOfAccount + "!\n" +
+
+        if(accountCreationSuccessful) {
+            String congratulationMessage = "Congrats! You just created a new account of type " + whichAccount + "!\n" +
                                            "The number of accounts that you have for that type is: " + accounts.get(whichAccount).size() + "\n";
             LOGGER.info(congratulationMessage);
         }
