@@ -3,8 +3,8 @@ package com.codedifferently.bankaccountlab;
 public class CheckingAccount extends BankAccount {
     private String name;
 
-    public CheckingAccount() {
-        super();
+    public CheckingAccount(String password) {
+        super(password);
         name = "not set";
     }
 

@@ -11,7 +11,7 @@ public class BankAccountTest {
 
     @Before
     public void instantiate() {
-        checkingAccount = new CheckingAccount();
+        checkingAccount = new CheckingAccount("123");
     }
 
     @Test
@@ -99,5 +99,43 @@ public class BankAccountTest {
         double actual = checkingAccount.makeWithdrawal(7.5);
 
         Assert.assertEquals(expected, actual, 0.0);
+    }
+
+    @Test
+    public void getPasswordTest() {
+        String expected = "123";
+
+        String actual = checkingAccount.getPassword();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void setPasswordTest() {
+        String expected = "Shepard Pie";
+
+        checkingAccount.setPassword("Shepard Pie");
+        String actual = checkingAccount.getPassword();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void isLockedTest() {
+        boolean expected = true;
+
+        boolean actual = checkingAccount.isLocked();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void setLockedTest() {
+        boolean expected = false;
+
+        checkingAccount.setLocked(false);
+        boolean actual = checkingAccount.isLocked();
+
+        Assert.assertEquals(expected, actual);
     }
 }

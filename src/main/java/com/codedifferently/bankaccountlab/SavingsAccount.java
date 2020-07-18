@@ -4,8 +4,8 @@ public class SavingsAccount extends BankAccount{
     private String name;
     private double rate;
 
-    public SavingsAccount() {
-        super();
+    public SavingsAccount(String password) {
+        super(password);
         name = "not set";
         rate = 0.0;
     }

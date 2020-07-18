@@ -38,7 +38,7 @@ public class MainApplication {
                 decision = scanner.nextInt();
             }
             catch(InputMismatchException ime) {
-                LOGGER.severe("Inputted the wrong type. Try again.");
+                LOGGER.severe("Inputted the wrong type. Try again another time.");
                 ime.printStackTrace();
                 break;
             }
@@ -74,7 +74,14 @@ public class MainApplication {
 
     private static void createAccount() {
         String whichAccountType = askTypeOfAccountForSpecifiedAction("create");
-        addToListOfBankAccounts(whichAccountType);
+        String password = setUpPassword();
+        addToListOfBankAccounts(whichAccountType, password);
+    }
+
+    private static String setUpPassword() {
+        LOGGER.info("What is the password that you want to be associated with your account?");
+        String password = scanner.next();
+        return password;
     }
 
     private static String askTypeOfAccountForSpecifiedAction(String specificAction) {
@@ -86,22 +93,22 @@ public class MainApplication {
         return whichAccountType;
     }
 
-    private static void addToListOfBankAccounts(String whichAccount) {
+    private static void addToListOfBankAccounts(String whichAccount, String password) {
         boolean successfullyCreatedAccount = false;
         String whichTypeOfAccount = "";
         switch(whichAccount) {
             case "business":
-                accounts.get("business").add(new BusinessAccount());
+                accounts.get("business").add(new BusinessAccount(password));
                 successfullyCreatedAccount = true;
                 whichTypeOfAccount = "business";
                 break;
             case "checking":
-                accounts.get("checking").add(new CheckingAccount());
+                accounts.get("checking").add(new CheckingAccount(password));
                 successfullyCreatedAccount = true;
                 whichTypeOfAccount = "checking";
                 break;
             case "savings":
-                accounts.get("savings").add(new SavingsAccount());
+                accounts.get("savings").add(new SavingsAccount(password));
                 successfullyCreatedAccount = true;
                 whichTypeOfAccount = "savings";
                 break;
@@ -116,14 +123,26 @@ public class MainApplication {
         }
     }
 
+    private static boolean doesUserKnowPassword(String whichAccountType, int indexOfAccountToBeViewed) {
+        String actualPasswordForAccount = accounts.get(whichAccountType).get(indexOfAccountToBeViewed).getPassword();
+        LOGGER.info("Please enter the password associated with this account");
+        String userGuessAtPassword = scanner.next();
+        return actualPasswordForAccount.equals(userGuessAtPassword);
+    }
+
     private static void viewAccount() {
         String whichAccountType = askTypeOfAccountForSpecifiedAction("view");
         int maxIndexInArrayList = returnMaxIndexOrPrintError(whichAccountType, "view");
         if(maxIndexInArrayList != -1) {
             int indexOfAccountToBeViewed = instructAndReturnInput(whichAccountType, "view", maxIndexInArrayList);
-            String infoAboutParticularAccount = "The account your asking for has the values of:\n" +
-                    accounts.get(whichAccountType).get(indexOfAccountToBeViewed).toString() + "\n";
-            LOGGER.info(infoAboutParticularAccount);
+            if(doesUserKnowPassword(whichAccountType, indexOfAccountToBeViewed)) {
+                String infoAboutParticularAccount = "The account your asking for has the values of:\n" +
+                        accounts.get(whichAccountType).get(indexOfAccountToBeViewed).toString() + "\n";
+                LOGGER.info(infoAboutParticularAccount);
+            }
+            else {
+                LOGGER.info("Sorry, you don't know the password of your account. Try again.");
+            }
         }
     }
 
@@ -132,15 +151,20 @@ public class MainApplication {
         int maxIndexInArrayList = returnMaxIndexOrPrintError(whichAccountType,"delete");
         if(maxIndexInArrayList != -1) {
             int indexOfAccountToBeDeleted = instructAndReturnInput(whichAccountType, "delete", maxIndexInArrayList);
-            accounts.get(whichAccountType).remove(indexOfAccountToBeDeleted);
-            LOGGER.info("You now have " + accounts.get(whichAccountType).size() + " accounts of type " + whichAccountType + "\n");
+            if(doesUserKnowPassword(whichAccountType, indexOfAccountToBeDeleted)) {
+                accounts.get(whichAccountType).remove(indexOfAccountToBeDeleted);
+                LOGGER.info("You now have " + accounts.get(whichAccountType).size() + " accounts of type " + whichAccountType + "\n");
+            }
+            else {
+                LOGGER.info("Sorry, you don't know the password of your account. Try again.");
+            }
         }
     }
 
     private static int returnMaxIndexOrPrintError(String whichAccountType, String action) {
         int maxIndexInArrayList = (accounts.get(whichAccountType).size() - 1);
         if(maxIndexInArrayList == -1) {
-            String accountDoesNotExist = "Sorry, you cant " + action + " the specified account type because it does not exist yet. Try again when there is at least one account of that type.\n";
+            String accountDoesNotExist = "Sorry, you can't " + action + " the specified account type because it does not exist yet. Try again when there is at least one account of that type.\n";
             LOGGER.warning(accountDoesNotExist);
             return -1;
         }
@@ -157,7 +181,7 @@ public class MainApplication {
             indexOfAccount = scanner.nextInt();
         }
         catch(InputMismatchException ime) {
-            LOGGER.severe("Inputted the wrong type. Try again.");
+            LOGGER.severe("Inputted the wrong type. Try again another time.");
             ime.printStackTrace();
             System.exit(-1);
         }
@@ -169,14 +193,19 @@ public class MainApplication {
         int maxIndexInArrayList = returnMaxIndexOrPrintError(whichAccountType,depositOrWithdraw);
         if(maxIndexInArrayList != -1) {
             int indexOfAccount = instructAndReturnInput(whichAccountType, depositOrWithdraw, maxIndexInArrayList);
-            double amountOfMoney = askForDepositOrWithdrawalAmount(depositOrWithdraw);
-            String previousMoneyMessage = "You used to have " + accounts.get(whichAccountType).get(indexOfAccount).getBalance() + " money in this account.";
-            LOGGER.info(previousMoneyMessage);
-            if(depositOrWithdraw.equals("deposit")) {
-                accounts.get(whichAccountType).get(indexOfAccount).makeDeposit(amountOfMoney);
+            if(doesUserKnowPassword(whichAccountType, indexOfAccount)) {
+                double amountOfMoney = askForDepositOrWithdrawalAmount(depositOrWithdraw);
+                String previousMoneyMessage = "You used to have " + accounts.get(whichAccountType).get(indexOfAccount).getBalance() + " money in this account.";
+                LOGGER.info(previousMoneyMessage);
+                if(depositOrWithdraw.equals("deposit")) {
+                    accounts.get(whichAccountType).get(indexOfAccount).makeDeposit(amountOfMoney);
+                }
+                else if(depositOrWithdraw.equals("withdrawal")) {
+                    accounts.get(whichAccountType).get(indexOfAccount).makeWithdrawal(amountOfMoney);
+                }
             }
-            else if(depositOrWithdraw.equals("withdrawal")) {
-                accounts.get(whichAccountType).get(indexOfAccount).makeWithdrawal(amountOfMoney);
+            else {
+                LOGGER.info("Sorry, you don't know the password of your account. Try again.");
             }
         }
     }
@@ -188,7 +217,7 @@ public class MainApplication {
             amountOfMoney = scanner.nextDouble();
         }
         catch(InputMismatchException ime) {
-            LOGGER.severe("You inputted the wrong type. Try again.");
+            LOGGER.severe("You inputted the wrong type. Try again another time.");
             ime.printStackTrace();
             System.exit(-1);
         }

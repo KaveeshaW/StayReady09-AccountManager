@@ -4,7 +4,8 @@ public class BusinessAccount extends BankAccount{
     private String companyName;
     private int taxID;
 
-    public BusinessAccount() {
+    public BusinessAccount(String password) {
+        super(password);
         companyName = "not known";
         taxID = 0;
     }

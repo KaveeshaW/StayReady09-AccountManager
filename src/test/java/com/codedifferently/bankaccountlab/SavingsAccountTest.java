@@ -9,7 +9,7 @@ public class SavingsAccountTest {
 
     @Before
     public void instantiate() {
-        savingsAccount = new SavingsAccount();
+        savingsAccount = new SavingsAccount("Shift");
     }
 
     @Test

@@ -10,7 +10,7 @@ public class CheckingAccountTest {
 
     @Before
     public void instantiate() {
-        checkingAccount = new CheckingAccount();
+        checkingAccount = new CheckingAccount("peanut");
     }
 
     @Test

@@ -11,6 +11,12 @@ public abstract class BankAccount {
     protected UUID accountNumber = UUID.randomUUID();
     protected double annualFees = 0.0;
     protected double balance = 0.0;
+    private String password = "";
+    protected boolean locked = true;
+
+    public BankAccount(String password) {
+        this.password = password;
+    }
 
     public UUID getAccountNumber() {
         return accountNumber;
@@ -53,6 +59,22 @@ public abstract class BankAccount {
             LOGGER.info("Your resulting balance is now: " + balance);
         }
         return amount;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String newPassword) {
+        password = newPassword;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     public String toString() {

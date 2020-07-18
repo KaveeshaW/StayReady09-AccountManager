@@ -9,7 +9,7 @@ public class BusinessAccountTest {
 
     @Before
     public void instantiate() {
-        businessAccount = new BusinessAccount();
+        businessAccount = new BusinessAccount("abc");
     }
 
     @Test
