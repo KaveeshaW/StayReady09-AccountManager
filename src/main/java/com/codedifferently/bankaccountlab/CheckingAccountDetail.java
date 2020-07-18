@@ -1,9 +1,10 @@
 package com.codedifferently.bankaccountlab;
+import java.util.UUID;
 
 public class CheckingAccountDetail {
     //no need for getters and setters of this particular thing
-    public int accountNumber;
-    public double fees;
-    public String name;
-    public double balance;
+    public UUID accountNumber = UUID.randomUUID();
+    public double annualFees = 120.0;
+    public String name = "not set";
+    public double balance = 0.0;
 }
