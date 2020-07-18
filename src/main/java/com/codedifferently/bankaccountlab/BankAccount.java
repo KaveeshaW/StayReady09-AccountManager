@@ -7,10 +7,9 @@ import java.util.logging.Logger;
 public abstract class BankAccount {
     public final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    //every subclass has these fields
-    protected UUID accountNumber = UUID.randomUUID();
-    protected double annualFees = 0.0;
-    protected double balance = 0.0;
+    private UUID accountNumber = UUID.randomUUID();
+    private double annualFees = 0.0;
+    private double balance = 0.0;
     private String password = "";
 
     public BankAccount(String password) {
