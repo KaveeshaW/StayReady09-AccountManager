@@ -43,13 +43,14 @@ public abstract class BankAccount {
     }
 
     public double makeWithdrawal(double amount) {
-        if(amount < 0) {
+        if(amount < 0 || balance - amount < 0) {
             LOGGER.info("Cannot make a withdrawal because it results in a value less than 0\nReturning 0 because there is nothing to withdraw");
             return 0.0;
         }
         else {
-            double amountToSubtract = -amount;
-            setBalance(amountToSubtract);
+            double newAmount = balance -amount;
+            setBalance(newAmount);
+            LOGGER.info("Your resulting balance is now: " + balance);
         }
         return amount;
     }
