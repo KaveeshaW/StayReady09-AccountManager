@@ -143,8 +143,8 @@ public class MainApplication {
     }
 
     private static int instructAndReturnInput(String whichAccountType, String action, int maxIndexInArrayList) {
-        String instructionsToDeleteAccount = "Which numbered account of type: " + whichAccountType + " would you like to " + action + "? Choose a value between 0 and " + maxIndexInArrayList;
-        LOGGER.info(instructionsToDeleteAccount);
+        String instructionsForSpecificAccount = "Which numbered account of type: " + whichAccountType + " would you like to " + action + "? Choose a value between 0 and " + maxIndexInArrayList;
+        LOGGER.info(instructionsForSpecificAccount);
         int indexOfAccount = 0;
         try {
             indexOfAccount = scanner.nextInt();
