@@ -119,23 +119,4 @@ public class BankAccountTest {
 
         Assert.assertEquals(expected, actual);
     }
-
-    @Test
-    public void isLockedTest() {
-        boolean expected = true;
-
-        boolean actual = checkingAccount.isLocked();
-
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void setLockedTest() {
-        boolean expected = false;
-
-        checkingAccount.setLocked(false);
-        boolean actual = checkingAccount.isLocked();
-
-        Assert.assertEquals(expected, actual);
-    }
 }

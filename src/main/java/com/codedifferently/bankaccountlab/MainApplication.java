@@ -42,26 +42,26 @@ public class MainApplication {
                 ime.printStackTrace();
                 break;
             }
-            performAction(decision);
+            whichActionToPerform(decision);
         }
     }
 
-    private static void performAction(int decision) {
+    private static void whichActionToPerform(int decision) {
         switch(decision) {
             case 1:
                 createAccount();
                 break;
             case 2:
-                viewAccount();
+                performGeneralAction("view");
                 break;
             case 3:
-                deleteAccount();
+                performGeneralAction("delete");
                 break;
             case 4:
-                depositOrWithdrawal("deposit");
+                performGeneralAction("deposit");
                 break;
             case 5:
-                depositOrWithdrawal("withdrawal");
+                performGeneralAction("withdrawal");
                 break;
             case 6:
                 LOGGER.info("Thank you for using the ATM! Please come again another time.");
@@ -130,37 +130,6 @@ public class MainApplication {
         return actualPasswordForAccount.equals(userGuessAtPassword);
     }
 
-    private static void viewAccount() {
-        String whichAccountType = askTypeOfAccountForSpecifiedAction("view");
-        int maxIndexInArrayList = returnMaxIndexOrPrintError(whichAccountType, "view");
-        if(maxIndexInArrayList != -1) {
-            int indexOfAccountToBeViewed = instructAndReturnInput(whichAccountType, "view", maxIndexInArrayList);
-            if(doesUserKnowPassword(whichAccountType, indexOfAccountToBeViewed)) {
-                String infoAboutParticularAccount = "The account your asking for has the values of:\n" +
-                        accounts.get(whichAccountType).get(indexOfAccountToBeViewed).toString() + "\n";
-                LOGGER.info(infoAboutParticularAccount);
-            }
-            else {
-                LOGGER.info("Sorry, you don't know the password of your account. Try again.");
-            }
-        }
-    }
-
-    private static void deleteAccount() {
-        String whichAccountType = askTypeOfAccountForSpecifiedAction("delete");
-        int maxIndexInArrayList = returnMaxIndexOrPrintError(whichAccountType,"delete");
-        if(maxIndexInArrayList != -1) {
-            int indexOfAccountToBeDeleted = instructAndReturnInput(whichAccountType, "delete", maxIndexInArrayList);
-            if(doesUserKnowPassword(whichAccountType, indexOfAccountToBeDeleted)) {
-                accounts.get(whichAccountType).remove(indexOfAccountToBeDeleted);
-                LOGGER.info("You now have " + accounts.get(whichAccountType).size() + " accounts of type " + whichAccountType + "\n");
-            }
-            else {
-                LOGGER.info("Sorry, you don't know the password of your account. Try again.");
-            }
-        }
-    }
-
     private static int returnMaxIndexOrPrintError(String whichAccountType, String action) {
         int maxIndexInArrayList = (accounts.get(whichAccountType).size() - 1);
         if(maxIndexInArrayList == -1) {
@@ -185,28 +154,51 @@ public class MainApplication {
             ime.printStackTrace();
             System.exit(-1);
         }
+        catch(IndexOutOfBoundsException indexOutOfBounds) {
+            LOGGER.severe("You tried to access an account that does not exist. Goodbye.");
+            indexOutOfBounds.printStackTrace();
+            System.exit(-1);
+        }
         return indexOfAccount;
     }
 
-    private static void depositOrWithdrawal(String depositOrWithdraw) {
-        String whichAccountType = askTypeOfAccountForSpecifiedAction(depositOrWithdraw);
-        int maxIndexInArrayList = returnMaxIndexOrPrintError(whichAccountType,depositOrWithdraw);
+    private static void performGeneralAction(String action) {
+        String whichAccountType = askTypeOfAccountForSpecifiedAction(action);
+        int maxIndexInArrayList = returnMaxIndexOrPrintError(whichAccountType,action);
         if(maxIndexInArrayList != -1) {
-            int indexOfAccount = instructAndReturnInput(whichAccountType, depositOrWithdraw, maxIndexInArrayList);
+            int indexOfAccount = instructAndReturnInput(whichAccountType, action, maxIndexInArrayList);
             if(doesUserKnowPassword(whichAccountType, indexOfAccount)) {
-                double amountOfMoney = askForDepositOrWithdrawalAmount(depositOrWithdraw);
-                String previousMoneyMessage = "You used to have " + accounts.get(whichAccountType).get(indexOfAccount).getBalance() + " money in this account.";
-                LOGGER.info(previousMoneyMessage);
-                if(depositOrWithdraw.equals("deposit")) {
-                    accounts.get(whichAccountType).get(indexOfAccount).makeDeposit(amountOfMoney);
-                }
-                else if(depositOrWithdraw.equals("withdrawal")) {
-                    accounts.get(whichAccountType).get(indexOfAccount).makeWithdrawal(amountOfMoney);
-                }
+                performSpecificAction(action, whichAccountType, indexOfAccount);
             }
             else {
                 LOGGER.info("Sorry, you don't know the password of your account. Try again.");
             }
+        }
+    }
+
+    private static void performSpecificAction(String action, String whichAccountType, int indexOfAccount) {
+        switch(action) {
+            case "deposit":
+            case "withdrawal":
+                double amountOfMoney = askForDepositOrWithdrawalAmount(action);
+                String previousMoneyMessage = "You used to have " + accounts.get(whichAccountType).get(indexOfAccount).getBalance() + " money in this account.";
+                LOGGER.info(previousMoneyMessage);
+                if(action.equals("deposit")) {
+                    accounts.get(whichAccountType).get(indexOfAccount).makeDeposit(amountOfMoney);
+                }
+                else if(action.equals("withdrawal")) {
+                    accounts.get(whichAccountType).get(indexOfAccount).makeWithdrawal(amountOfMoney);
+                }
+                break;
+            case "view":
+                String infoAboutParticularAccount = "The account your asking for has the values of:\n" +
+                        accounts.get(whichAccountType).get(indexOfAccount).toString() + "\n";
+                LOGGER.info(infoAboutParticularAccount);
+                break;
+            case "delete":
+                accounts.get(whichAccountType).remove(indexOfAccount);
+                LOGGER.info("You now have " + accounts.get(whichAccountType).size() + " accounts of type " + whichAccountType + "\n");
+                break;
         }
     }
 

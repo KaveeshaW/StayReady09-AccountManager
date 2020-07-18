@@ -12,7 +12,6 @@ public abstract class BankAccount {
     protected double annualFees = 0.0;
     protected double balance = 0.0;
     private String password = "";
-    protected boolean locked = true;
 
     public BankAccount(String password) {
         this.password = password;
@@ -54,7 +53,7 @@ public abstract class BankAccount {
             return 0.0;
         }
         else {
-            double newAmount = balance -amount;
+            double newAmount = balance - amount;
             setBalance(newAmount);
             LOGGER.info("Your resulting balance is now: " + balance);
         }
@@ -67,14 +66,6 @@ public abstract class BankAccount {
 
     public void setPassword(String newPassword) {
         password = newPassword;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
     }
 
     public String toString() {
