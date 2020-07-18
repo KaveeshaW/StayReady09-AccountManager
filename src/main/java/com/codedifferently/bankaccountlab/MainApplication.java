@@ -28,12 +28,12 @@ public class MainApplication {
         int stopInteraction = 6;
         while(decision != stopInteraction) {
             LOGGER.info("What do you want to do? Enter a number between 1 - 6, corresponding to:\n" +
-                            "1) create an account\n" +
-                            "2) view an account\n" +
-                            "3) delete an account\n" +
-                            "4) deposit into an account\n" +
-                            "5) withdraw from an account\n" +
-                            "6) quit");
+                        "1) create an account\n" +
+                        "2) view an account\n" +
+                        "3) delete an account\n" +
+                        "4) deposit into an account\n" +
+                        "5) withdraw from an account\n" +
+                        "6) quit");
             try {
                 decision = scanner.nextInt();
             }
@@ -86,9 +86,9 @@ public class MainApplication {
 
     private static String askTypeOfAccountForSpecifiedAction(String specificAction) {
         LOGGER.info("What type of account do you want to " + specificAction + "?\nYou could type in:\n" +
-                "business\n" +
-                "checking\n" +
-                "savings\n");
+                    "business\n" +
+                    "checking\n" +
+                    "savings\n");
         String whichAccountType = scanner.next().trim();
         return whichAccountType;
     }
